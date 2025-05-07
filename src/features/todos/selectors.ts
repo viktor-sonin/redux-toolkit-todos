@@ -6,11 +6,11 @@ const selectTodos = (state: TodosState) => state.todos;
 
 export const selectFilteredTodos = createSelector(
 	[selectTodos, (_state: TodosState, filterType: FilterType) => filterType],
-	(list, filterType) => {
+	(todos, filterType) => {
 		if (filterType !== FilterType.ALL) {
-			return list.filter((todo) => todo.completed === (filterType === FilterType.COMPLETED));
+			return todos.filter((todo) => todo.completed === (filterType === FilterType.COMPLETED));
 		}
-		return list;
+		return todos;
 	}
 );
 
