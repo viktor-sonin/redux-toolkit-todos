@@ -2,7 +2,7 @@
 	"name": "hw_redux-toolkit",
 	"private": true,
 	"version": "0.0.1",
-	"homepage": "https://viktor-sonin.github.io/redux-toolkit-todo/",
+	"homepage": "https://viktor-sonin.github.io/redux-toolkit-todos/",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
