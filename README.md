@@ -1,4 +1,5 @@
 # 📝ToDo приложение на React с использованием стейт менеджера Redux Toolkit
+Превью проекта: [https://viktor-sonin.github.io/redux-toolkit-todos/](https://viktor-sonin.github.io/redux-toolkit-todos/)
 
 ### Тестовое задание: «Управление состоянием с Redux Toolkit: To-Do с таблицей и сохранением»
 
@@ -33,20 +34,20 @@
 
 ```
 src/
-├── App.tsx	              # Прослойка между Todo и index.tsx
-├── index.tsx							# Точка входа, тут подключил store и ThemeProvider
+├── App.tsx			# Прослойка между Todo и index.tsx
+├── index.tsx			# Точка входа, тут подключил store и ThemeProvider
 ├── app/
-│  ├── reduxHooks.ts			# Типизированные хуки
+│  ├── reduxHooks.ts		# Типизированные хуки
 │  └── store.ts          	# Redux Store с сохранением в localStorage
 ├── components/
-│  ├── Pagination   		 	# Компонент пагинации для таблицы
-│  ├── TodoForm    		   	# Компонент модальной формы для создания/изменения Todo-шек
-│  └── TodoTable		     	# Компонент таблицы
+│  ├── Pagination		# Компонент пагинации для таблицы
+│  ├── TodoForm			# Компонент модальной формы для создания/изменения Todo-шек
+│  └── TodoTable		# Компонент таблицы
 ├── features/
-│  ├── todoSelectors.ts  	# Кастомные селекторы для фильтрации таблицы
-│  └── todosSlice.ts     	# Слайс для стора
+│  ├── todoSelectors.ts		# Кастомные селекторы для фильтрации таблицы
+│  └── todosSlice.ts		# Слайс для стора
 └── pages/
-   └── Todo.tsx    				# Основной компонент с состоянием
+  └── Todo.tsx			# Основной компонент с состоянием
 ```
 
 ##### Запуск проекта
@@ -68,16 +69,16 @@ npm run dev
 
 ```ts
 function hydrateStore(): TodosState | object {
-	try {
-		const serialisedState = localStorage.getItem(REDUX_LOCAL_STORAGE_KEY);
-		if (serialisedState) {
-			return JSON.parse(serialisedState);
-		}
-	} catch (e) {
-		console.warn(e);
-	}
+  try {
+    const serialisedState = localStorage.getItem(REDUX_LOCAL_STORAGE_KEY);
+    if (serialisedState) {
+      return JSON.parse(serialisedState);
+    }
+  } catch (e) {
+    console.warn(e);
+  }
 
-	return {};
+  return {};
 }
 ```
 
@@ -85,8 +86,8 @@ function hydrateStore(): TodosState | object {
 
 ```ts
 export const store = configureStore({
-	...,
-	preloadedState: hydrateStore()
+  ...,
+  preloadedState: hydrateStore()
 });
 ```
 
@@ -96,12 +97,12 @@ export const store = configureStore({
 
 ```ts
 export const saveToLocalStorage = (state: { todo: TodosState }) => {
-	try {
-		const serializedState = JSON.stringify(state);
-		localStorage.setItem(REDUX_LOCAL_STORAGE_KEY, serializedState);
-	} catch (e) {
-		console.warn("Could not save state to localStorage", e);
-	}
+  try {
+    const serializedState = JSON.stringify(state);
+      localStorage.setItem(REDUX_LOCAL_STORAGE_KEY, serializedState);
+    } catch (e) {
+      console.warn("Could not save state to localStorage", e);
+    }
 };
 ```
 
@@ -121,13 +122,13 @@ store.subscribe(() => saveToLocalStorage(store.getState()));
 
 ```ts
 export const selectFilteredTodos = createSelector(
-	[selectTodos, (_state: TodosState, filterType: FilterType) => filterType],
-	(list, filterType) => {
-		if (filterType !== FilterType.ALL) {
-			return list.filter((todo) => todo.completed === (filterType === FilterType.COMPLETED));
-		}
-		return list;
-	}
+  [selectTodos, (_state: TodosState, filterType: FilterType) => filterType],
+  (list, filterType) => {
+    if (filterType !== FilterType.ALL) {
+      return list.filter((todo) => todo.completed === (filterType === FilterType.COMPLETED));
+    }
+    return list;
+  }
 );
 ```
 
@@ -135,12 +136,12 @@ export const selectFilteredTodos = createSelector(
 
 ```ts
 export const selectSortedAndFilteredTodos = createSelector(
-	[selectFilteredTodos, (_state: TodosState, _filter: FilterType, sortBy: SortType) => sortBy],
-	(filteredTodos, sortBy) => {
-		return [...filteredTodos].sort(({ createdAt: a }, { createdAt: b }) => {
-			return sortBy === SortType.OLDEST ? a - b : b - a;
-		});
-	}
+  [selectFilteredTodos, (_state: TodosState, _filter: FilterType, sortBy: SortType) => sortBy],
+  (filteredTodos, sortBy) => {
+    return [...filteredTodos].sort(({ createdAt: a }, { createdAt: b }) => {
+      return sortBy === SortType.OLDEST ? a - b : b - a;
+    });
+  }
 );
 ```
 
@@ -148,16 +149,16 @@ export const selectSortedAndFilteredTodos = createSelector(
 
 ```ts
 export const selectPaginatedTodos = createSelector(
-	[
-		selectSortedAndFilteredTodos,
-		(_state: TodosState, _filter: FilterType, _sortBy: SortType, page: number) => page,
-		(_state: TodosState, _filter: FilterType, _sortBy: SortType, _page: number, pageSize: number) =>
-			pageSize
-	],
-	(sortedTodos, page, pageSize) => {
-		const startIndex = (page - 1) * pageSize;
-		return sortedTodos.slice(startIndex, startIndex + pageSize);
-	}
+  [
+    selectSortedAndFilteredTodos,
+    (_state: TodosState, _filter: FilterType, _sortBy: SortType, page: number) => page,
+    (_state: TodosState, _filter: FilterType, _sortBy: SortType, _page: number, pageSize: number) =>
+      pageSize
+  ],
+  (sortedTodos, page, pageSize) => {
+    const startIndex = (page - 1) * pageSize;
+    return sortedTodos.slice(startIndex, startIndex + pageSize);
+  }
 );
 ```
 
@@ -177,36 +178,36 @@ export const selectPaginatedTodos = createSelector(
 
 ```ts
 const useTodoStore = create<ITodosStore, TPersist<ITodosStore>>(
-	persist((set, get) => ({
-		// ... state, actions(add, edit, delete)
+  persist((set, get) => ({
+    // ... state, actions(add, edit, delete)
 
-		// Фильтрация
-	  filteredTodos: () => {
-	    const { todos, filter } = get();
-	    if (filter !== FilterType.ALL) {
-	      return todos.filter(todo =>
-	        todo.completed === (filter === FilterType.COMPLETED)
-	      );
-	    }
-	    return todos;
-	  },
+    // Фильтрация
+    filteredTodos: () => {
+      const { todos, filter } = get();
+      if (filter !== FilterType.ALL) {
+        return todos.filter(todo =>
+          todo.completed === (filter === FilterType.COMPLETED)
+        );
+      }
+      return todos;
+    },
 
-		// Сортировка
-	  sortedTodos: () => {
-	    const { filteredTodos, sort } = get();
-	    return [...filteredTodos()].sort(({ createdAt: a }, { createdAt: b }) =>
-	      sort === SortType.OLDEST ? a - b : b - a;
-	    );
-	  },
+    // Сортировка
+    sortedTodos: () => {
+      const { filteredTodos, sort } = get();
+      return [...filteredTodos()].sort(({ createdAt: a }, { createdAt: b }) =>
+        sort === SortType.OLDEST ? a - b : b - a;
+      );
+    },
 
-		// Пагинация
-	  paginatedTodos: () => {
-	    const { sortedTodos, page, pageSize } = get();
-	    const start = (page - 1) * pageSize;
-	    return sortedTodos().slice(start, start + pageSize);
-	  }
-	}),
-	{ name: "todos-store", version: 20250426 }
+    // Пагинация
+    paginatedTodos: () => {
+      const { sortedTodos, page, pageSize } = get();
+      const start = (page - 1) * pageSize;
+      return sortedTodos().slice(start, start + pageSize);
+    }
+  }),
+  { name: "todos-store", version: 20250426 }
 ));
 ```
 
@@ -223,36 +224,36 @@ const useTodoStore = create<ITodosStore, TPersist<ITodosStore>>(
 
 ```ts
 class TodoStore {
-	// ... state, actions(add, edit, delete)
+  // ... state, actions(add, edit, delete)
 
-	constructor() {
-		makeAutoObservable(this, {
-			filteredTodos: computed,
-			sortedTodos: computed,
-			paginatedTodos: computed
-		});
-	}
+  constructor() {
+    makeAutoObservable(this, {
+      filteredTodos: computed,
+      sortedTodos: computed,
+      paginatedTodos: computed
+    });
+  }
 
-	// Фильтрация
-	get filteredTodos() {
-		if (this.filter !== FilterType.ALL) {
-			return this.todos.filter((todo) => todo.completed === (this.filter === FilterType.COMPLETED));
-		}
-		return this.todos;
-	}
+  // Фильтрация
+  get filteredTodos() {
+    if (this.filter !== FilterType.ALL) {
+      return this.todos.filter((todo) => todo.completed === (this.filter === FilterType.COMPLETED));
+    }
+    return this.todos;
+  }
 
-	// Сортировка
-	get sortedTodos() {
-		return [...this.filteredTodos].sort(({ createdAt: a }, { createdAt: b }) =>
-			this.sort === SortType.OLDEST ? a - b : b - a;
-		);
-	}
+  // Сортировка
+  get sortedTodos() {
+    return [...this.filteredTodos].sort(({ createdAt: a }, { createdAt: b }) =>
+      this.sort === SortType.OLDEST ? a - b : b - a;
+    );
+  }
 
-	// Пагинация
-	get paginatedTodos() {
-		const start = (this.page - 1) * this.pageSize;
-		return this.sortedTodos.slice(start, start + this.pageSize);
-	}
+  // Пагинация
+  get paginatedTodos() {
+    const start = (this.page - 1) * this.pageSize;
+    return this.sortedTodos.slice(start, start + this.pageSize);
+  }
 }
 ```
 
@@ -275,23 +276,23 @@ class TodoStore {
 
 // Фильтрация
 const $filteredTodos = combine($todos, $filter, (todos, filter) => {
-	if (filter !== FilterType.ALL) {
-		return todos.filter((todo) => todo.completed === (filter === FilterType.COMPLETED));
-	}
-	return todos;
+  if (filter !== FilterType.ALL) {
+    return todos.filter((todo) => todo.completed === (filter === FilterType.COMPLETED));
+  }
+  return todos;
 });
 
 // Сортировка
 const $sortedTodos = combine($filteredTodos, $sort, (todos, sort) => {
-	return [...todos].sort(({ createdAt: a }, { createdAt: b }) =>
-		sort === SortType.OLDEST ? a - b : b - a;
-	);
+  return [...todos].sort(({ createdAt: a }, { createdAt: b }) =>
+    sort === SortType.OLDEST ? a - b : b - a;
+  );
 });
 
 // Пагинация
 const $paginatedTodos = combine($sortedTodos, $page, $pageSize, (todos, page, pageSize) => {
-	const start = (page - 1) * pageSize;
-	return todos.slice(start, start + pageSize);
+  const start = (page - 1) * pageSize;
+  return todos.slice(start, start + pageSize);
 });
 ```
 
