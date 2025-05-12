@@ -37,20 +37,20 @@
 
 ```tsx
 src/
-├── App.tsx              # Прослойка между Todo и index.tsx
-├── index.tsx            # Точка входа, тут подключил store и ThemeProvider
+├── App               # Прослойка между Todo и index.tsx
+├── index             # Точка входа, тут подключил Store и ThemeProvider
 ├── app/
-│  ├── reduxHooks.ts     # Типизированные хуки
-│  └── store.ts          # Redux Store с сохранением в localStorage
+│  ├── reduxHooks     # Типизированные хуки
+│  └── store          # Redux Store с сохранением в localStorage
 ├── components/
-│  ├── Pagination/       # Компонент пагинации для таблицы
-│  ├── TodoForm/         # Компонент модальной формы для создания/изменения Todo-шек
-│  └── TodoTable/        # Компонент таблицы
+│  ├── Pagination/    # Компонент пагинации для таблицы
+│  ├── TodoForm/      # Компонент модальной формы для создания/изменения Todo-шек
+│  └── TodoTable/     # Компонент таблицы
 ├── features/
-│  ├── selectors.ts      # Кастомные селекторы для фильтрации таблицы
-│  └── slice.ts          # Слайс для стора
+│  ├── selectors      # Кастомные селекторы для фильтрации таблицы
+│  └── slice          # Слайс для стора
 └── pages/
-  └── Todo.tsx           # Основной компонент с состоянием
+  └── Todo            # Основной компонент с состоянием
 ```
 
 ### 🚀 Установка
